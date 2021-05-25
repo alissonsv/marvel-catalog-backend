@@ -10,6 +10,8 @@ router.post('/', async (req, res) => {
     if (!user) {
       try {
         user = await User.create(req.body);
+
+        await user.generateAuthToken();
         res.status(201).send(user);
       } catch (e) {
         res.status(500).send();
