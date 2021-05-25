@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const app = require('./app');
 
 const port = process.env.PORT;
