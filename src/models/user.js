@@ -4,6 +4,26 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('../db/sequelize');
 
 class User extends Model {
+  static async findByCredentials(email, password) {
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new Error('Unable to login!');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Unable to login!');
+    }
+
+    return user;
+  }
+
   async generateAuthToken() {
     const token = jwt.sign({ id: this.id }, process.env.JWT_SECRET);
 
