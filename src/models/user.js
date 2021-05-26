@@ -5,8 +5,14 @@ const sequelize = require('../db/sequelize');
 
 class User extends Model {
   async generateAuthToken() {
-    this.token = jwt.sign({ id: this.id }, process.env.JWT_SECRET);
-    await this.save();
+    const token = jwt.sign({ id: this.id }, process.env.JWT_SECRET);
+
+    const tokens = this.tokens.concat(token);
+    await this.update({ tokens }, {
+      where: {
+        id: this.id,
+      },
+    });
   }
 
   toJSON() {
@@ -33,8 +39,9 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  token: {
-    type: DataTypes.STRING,
+  tokens: {
+    type: DataTypes.ARRAY(DataTypes.TEXT),
+    defaultValue: [],
   },
 }, {
   hooks: {

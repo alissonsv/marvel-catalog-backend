@@ -25,7 +25,7 @@ describe('User API', () => {
 
     expect(user).not.toBeNull();
     expect(user.password).not.toBe('passtest123');
-    expect(response.body).toHaveProperty('token');
+    expect(response.body).toHaveProperty('tokens');
   });
 
   test('Should not add user with missing parameters', async () => {
@@ -63,7 +63,7 @@ describe('User API', () => {
   });
 
   test('Should return status 500 if occurs an error on server', async () => {
-    jest.spyOn(User, 'create').mockImplementation(() => { throw new Error(); });
+    jest.spyOn(User, 'create').mockImplementationOnce(() => { throw new Error(); });
 
     await request(app)
       .post('/api/user')
@@ -72,5 +72,16 @@ describe('User API', () => {
         password: 'passtest123',
       })
       .expect(500);
+  });
+
+  test('Should generate another token if user already has one', async () => {
+    const user = await User.create({
+      email: 'test@test.com',
+      password: 'passtest123',
+    });
+
+    await user.generateAuthToken();
+    await user.generateAuthToken();
+    expect(user.tokens.length).toBe(2);
   });
 });
