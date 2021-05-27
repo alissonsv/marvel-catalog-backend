@@ -12,8 +12,8 @@ router.post('/', async (req, res) => {
       try {
         user = await User.create(req.body);
 
-        await user.generateAuthToken();
-        res.status(201).send(user);
+        const token = await user.generateAuthToken();
+        res.status(201).send({ user, token });
       } catch (e) {
         res.status(500).send();
       }
@@ -30,8 +30,8 @@ router.post('/login', async (req, res) => {
     try {
       const user = await User.findByCredentials(req.body.email, req.body.password);
 
-      await user.generateAuthToken();
-      res.send(user);
+      const token = await user.generateAuthToken();
+      res.send({ user, token });
     } catch (e) {
       res.status(401).send({ error: e.message });
     }

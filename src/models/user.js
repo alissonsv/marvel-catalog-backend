@@ -33,11 +33,16 @@ class User extends Model {
         id: this.id,
       },
     });
+
+    return token;
   }
 
   toJSON() {
     const user = this.get({ plain: true });
     delete user.password;
+    delete user.tokens;
+    delete user.createdAt;
+    delete user.updatedAt;
 
     return user;
   }

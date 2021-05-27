@@ -21,11 +21,11 @@ describe('User API', () => {
       })
       .expect(201);
 
-    const user = await User.findByPk(response.body.id);
+    const user = await User.findByPk(response.body.user.id);
 
     expect(user).not.toBeNull();
     expect(user.password).not.toBe('passtest123');
-    expect(response.body).toHaveProperty('tokens');
+    expect(response.body).toHaveProperty('token');
   });
 
   test('Should not add user with missing parameters', async () => {
