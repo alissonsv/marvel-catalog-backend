@@ -60,14 +60,14 @@ router.get('/characters', auth, (req, res) => {
 });
 
 router.post('/comics', auth, async (req, res) => {
-  req.user.comics = req.body.comics;
+  req.user.comics = req.body;
   await req.user.save();
 
   res.send(req.user.comics);
 });
 
 router.post('/characters', auth, async (req, res) => {
-  req.user.characters = req.body.characters;
+  req.user.characters = req.body;
   await req.user.save();
 
   res.send(req.user.characters);
