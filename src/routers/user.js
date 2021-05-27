@@ -51,4 +51,26 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
+router.get('/comics', auth, (req, res) => {
+  res.send(req.user.comics);
+});
+
+router.get('/characters', auth, (req, res) => {
+  res.send(req.user.characters);
+});
+
+router.post('/comics', auth, async (req, res) => {
+  req.user.comics = req.body.comics;
+  await req.user.save();
+
+  res.send(req.user.comics);
+});
+
+router.post('/characters', auth, async (req, res) => {
+  req.user.characters = req.body.characters;
+  await req.user.save();
+
+  res.send(req.user.characters);
+});
+
 module.exports = router;

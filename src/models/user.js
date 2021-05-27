@@ -64,6 +64,14 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  comics: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    defaultValue: [],
+  },
+  characters: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    defaultValue: [],
+  },
   tokens: {
     type: DataTypes.ARRAY(DataTypes.TEXT),
     defaultValue: [],
