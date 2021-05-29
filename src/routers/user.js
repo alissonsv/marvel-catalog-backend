@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const { createUrl, fetchMarvelAPI } = require('../utils/marvelAPI');
 
 const router = express.Router();
 
@@ -55,10 +56,6 @@ router.get('/comics', auth, (req, res) => {
   res.send(req.user.comics);
 });
 
-router.get('/characters', auth, (req, res) => {
-  res.send(req.user.characters);
-});
-
 router.post('/comics', auth, async (req, res) => {
   req.user.comics = req.body;
   await req.user.save();
@@ -66,11 +63,47 @@ router.post('/comics', auth, async (req, res) => {
   res.send(req.user.comics);
 });
 
+router.get('/comics/details', auth, async (req, res) => {
+  try {
+    const comics = await Promise.all(
+      req.user.comics.map(async (comic) => {
+        const urlString = `https://gateway.marvel.com:443/v1/public/comics/${comic}`;
+        const url = createUrl(urlString);
+        const result = await fetchMarvelAPI(url);
+        return result?.data?.results[0];
+      }),
+    );
+    res.send(comics);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+router.get('/characters', auth, (req, res) => {
+  res.send(req.user.characters);
+});
+
 router.post('/characters', auth, async (req, res) => {
   req.user.characters = req.body;
   await req.user.save();
 
   res.send(req.user.characters);
+});
+
+router.get('/characters/details', auth, async (req, res) => {
+  try {
+    const characters = await Promise.all(
+      req.user.characters.map(async (character) => {
+        const urlString = `https://gateway.marvel.com:443/v1/public/characters/${character}`;
+        const url = createUrl(urlString);
+        const result = await fetchMarvelAPI(url);
+        return result?.data?.results[0];
+      }),
+    );
+    res.send(characters);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 module.exports = router;
