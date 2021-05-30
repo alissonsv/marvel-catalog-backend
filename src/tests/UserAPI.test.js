@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
-const sequelize = require('../db/sequelize');
+const sequelize = require('../../db/sequelize');
 const User = require('../models/user');
 
 afterAll(async () => {
