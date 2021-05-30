@@ -22,6 +22,26 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+router.get('/:id/comics', auth, async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (!Number.isNaN(id)) {
+    const urlString = `https://gateway.marvel.com:443/v1/public/characters/${id}/comics`;
+    const url = createUrl(urlString);
+    const params = Object.keys(req.query);
+    params.forEach((param) => url.searchParams.set(param, req.query[param]));
+
+    try {
+      const characters = await fetchMarvelAPI(url);
+      res.send(characters);
+    } catch (e) {
+      res.status(500).send();
+    }
+  } else {
+    res.status(500).send({ error: 'Please provide an id!' });
+  }
+});
+
 router.get('/', auth, async (req, res) => {
   const urlString = 'https://gateway.marvel.com:443/v1/public/characters';
   const url = createUrl(urlString);
