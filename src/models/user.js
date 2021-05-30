@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sequelize = require('../db/sequelize');
+const sequelize = require('../../db/sequelize');
 
 class User extends Model {
   static async findByCredentials(email, password) {

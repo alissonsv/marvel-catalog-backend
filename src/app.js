@@ -1,5 +1,5 @@
 const path = require('path');
-require('dotenv-flow').config({ path: path.join(__dirname, './config') });
+require('dotenv-flow').config({ path: path.join(__dirname, '../config') });
 
 const express = require('express');
 const userRouter = require('./routers/user');
