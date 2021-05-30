@@ -28,8 +28,13 @@ router.get('/:id/comics', auth, async (req, res) => {
   if (!Number.isNaN(id)) {
     const urlString = `https://gateway.marvel.com:443/v1/public/characters/${id}/comics`;
     const url = createUrl(urlString);
+
     const params = Object.keys(req.query);
-    params.forEach((param) => url.searchParams.set(param, req.query[param]));
+    params.forEach((param) => {
+      if (req.query[param] !== '') {
+        url.searchParams.set(param, req.query[param]);
+      }
+    });
 
     try {
       const characters = await fetchMarvelAPI(url);
@@ -47,8 +52,11 @@ router.get('/', auth, async (req, res) => {
   const url = createUrl(urlString);
 
   const params = Object.keys(req.query);
-
-  params.forEach((param) => url.searchParams.set(param, req.query[param]));
+  params.forEach((param) => {
+    if (req.query[param] !== '') {
+      url.searchParams.set(param, req.query[param]);
+    }
+  });
 
   try {
     const characters = await fetchMarvelAPI(url);
