@@ -88,8 +88,4 @@ User.init({
   sequelize,
 });
 
-(async () => {
-  await User.sync();
-})();
-
 module.exports = User;

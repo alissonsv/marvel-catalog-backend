@@ -1,11 +1,10 @@
-require('dotenv-flow').config({ path: __dirname });
-
 module.exports = {
   development: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    logging: false,
     dialect: 'postgres',
   },
   test: {
@@ -13,6 +12,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env_DB_HOST,
+    logging: false,
     dialect: 'postgres',
   },
   production: {
@@ -20,6 +20,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
+    logging: false,
     dialect: 'postgres',
     use_env_variable: 'DATABASE_URL',
     dialectOptions: {
